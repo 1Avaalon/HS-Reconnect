@@ -1,0 +1,23 @@
+name: Build Windows reconnect prototype
+on:
+  workflow_dispatch:
+  push:
+    paths: ["src/**", "Cargo.toml", "Cargo.lock", "build.rs", "app.manifest", ".github/workflows/build.yml"]
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect installed Rust toolchain
+        run: rustup show
+      - name: Test parser and connection selection
+        run: cargo test --lib --locked --offline --target x86_64-pc-windows-msvc
+      - name: Build native window
+        run: cargo build --release --locked --offline --target x86_64-pc-windows-msvc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hs-rust-reconnect-windows-x64
+          path: target/x86_64-pc-windows-msvc/release/hs-rust-reconnect.exe
+          if-no-files-found: error

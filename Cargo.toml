@@ -1,0 +1,15 @@
+[package]
+name = "hs-rust-reconnect"
+version = "0.6.3"
+edition = "2021"
+build = "build.rs"
+license = "MIT"
+description = "Manual Windows TCP reconnect button; no injection or auto-updates"
+
+[dependencies]
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
